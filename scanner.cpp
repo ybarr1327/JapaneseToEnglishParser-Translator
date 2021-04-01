@@ -15,16 +15,43 @@ using namespace std;
 
 // --------- Two DFAs ---------------------------------
 
-bool isVowel(char c)
+/**********************************************************************************
+isVowel function
+Parameters: 
+ char c
+   takes a character c as an input to test
+Purpose
+this function tests if the character is a vowel which includes aeiouIE characters
+returns true if it is in these characters false if not
+**********************************************************************************/
+bool isVowel(char c) 
 {
   return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'I' || c == 'E');
 }
 
+/**********************************************************************************
+is_bghkmpr function
+Parameters: 
+ char c
+   takes a character c as an input to test
+Purpose
+this function tests if the character is one of the possible characters bghkmpr
+returns true if it is in these characters false if not
+**********************************************************************************/
 bool is_bghkmpr(char c)
 {
   return (c == 'b' || c == 'g' || c == 'h' || c == 'k' || c == 'm' || c == 'p' || c == 'r');
 }
 
+/**********************************************************************************
+is_dwzyj function
+Parameters: 
+ char c
+   takes a character c as an input to test
+Purpose
+this function tests if the character is one of the possible characters dwzyj
+returns true if it is in these characters false if not
+**********************************************************************************/
 bool is_dwzyj(char c)
 {
   return (c == 'd' || c == 'w' || c == 'z' || c == 'y' || c == 'j');
@@ -32,14 +59,16 @@ bool is_dwzyj(char c)
 
 // WORD DFA
 // Done by: Gabriel Ybarra
-// RE:   **
+// RE:   (vowel | vowel n | consonant vowel | consonant vowel n | consonant-pair vowel | consonant-pair vowel n)^+              
+
 bool word(string s)
 {
+  //defining the state and pos
   string state = "q0";
   int charpos = 0;
   cout << "Trying the dfa1 machine" << endl;
   /* replace the following todo the word dfa  */
-  while (s[charpos] != '\0')
+  while (s[charpos] != '\0')//while not at the last character
   {
     cout << "current state: " << state << endl;
     cout << "character: " << s[charpos] << endl;
@@ -124,13 +153,15 @@ bool word(string s)
 
 // PERIOD DFA
 // Done by: Gabriel Ybarra
+// RE: .
 bool period(string s)
 { // complete this **
+  //defining the state and pos
   string state = "q0";
   int charpos = 0;
   cout << "Trying the dfa2 machine" << endl;
 
-  while (s[charpos] != '\0')
+  while (s[charpos] != '\0')//while not at the last character
   {
     cout << "current state: " << state << endl;
     cout << "character: " << s[charpos] << endl;
