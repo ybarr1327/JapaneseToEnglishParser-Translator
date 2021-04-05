@@ -24,7 +24,7 @@ Purpose
 this function tests if the character is a vowel which includes aeiouIE characters
 returns true if it is in these characters false if not
 **********************************************************************************/
-bool isVowel(char c) 
+bool isVowel(char c)
 {
   return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'I' || c == 'E');
 }
@@ -59,7 +59,7 @@ bool is_dwzyj(char c)
 
 // WORD DFA
 // Done by: Gabriel Ybarra
-// RE:   (vowel | vowel n | consonant vowel | consonant vowel n | consonant-pair vowel | consonant-pair vowel n)^+              
+// RE:   (vowel | vowel n | consonant vowel | consonant vowel n | consonant-pair vowel | consonant-pair vowel n)^+
 
 bool word(string s)
 {
@@ -68,7 +68,7 @@ bool word(string s)
   int charpos = 0;
   cout << "Trying the dfa1 machine" << endl;
   /* replace the following todo the word dfa  */
-  while (s[charpos] != '\0')//while not at the last character
+  while (s[charpos] != '\0') //while not at the last character
   {
     cout << "current state: " << state << endl;
     cout << "character: " << s[charpos] << endl;
@@ -161,7 +161,7 @@ bool period(string s)
   int charpos = 0;
   cout << "Trying the dfa2 machine" << endl;
 
-  while (s[charpos] != '\0')//while not at the last character
+  while (s[charpos] != '\0') //while not at the last character
   {
     cout << "current state: " << state << endl;
     cout << "character: " << s[charpos] << endl;
@@ -190,6 +190,7 @@ bool period(string s)
 // TABLES Done by: Hieu, Ryan
 
 // ** Update the tokentype to be WORD1, WORD2, PERIOD, ERROR, EOFM, etc.
+// tokentype is an enumerated list of the token types
 enum tokentype
 {
   ERROR,
@@ -211,12 +212,15 @@ enum tokentype
 };
 
 // ** For the display names of tokens - must be in the same order as the tokentype.
+
+// tokenName is a string array that contains the display names of the tokens.
 string tokenName[30] = {"ERROR", "WORD1", "WORD2", "PERIOD", "EOFM", "VERB", "VERBNEG", "VERBPAST", "VERBPASTNEG", "IS", "WAS", "SUBJECT", "OBJECT", "DESTINATION", "PRONOUN", "CONNECTOR"};
 
 // ** Need the reservedwords table to be set up here.
 // ** Do not require any file input for this. Hard code the table.
 // ** a.out should work without any additional files.
 
+//ReservedWords is a string array that contains a set of reserved words
 string reservedWords[19] = {
     //taken from reservedwords.txt
     //words: tokentype:
@@ -248,7 +252,7 @@ ifstream fin; // global stream for reading from the input file
 
 // Scanner processes only one word each time it is called
 // Gives back the token type and the word itself
-// ** Done by: Hieu Ryan
+// ** Done by: Hieu, Ryan
 int scanner(tokentype &tt, string &w)
 {
 
@@ -270,78 +274,96 @@ int scanner(tokentype &tt, string &w)
   */
 
   fin >> w;
-
+  // if w == "eofm"
   if (w == "eofm")
   {
-    return EOFM;
+    return EOFM; // returns the token type EOFM
   }
+  //else if word(w) returns true
   else if (word(w))
   {
+    // bool variable rWords set to false
     bool rWords = false;
+    //for loop to loop through the list of reserved words and if the word
+    //is a reserved word, the tokenType is updated and we break from the loop.
+    //if the word is not a reserved word, we check if the last letter in the word is either an I or and E
+    // which then wetermines if its token type is either word1 or word2.
+    //We then check is the function period(w) is true and if so, we update the token type to PERIOD.
+    //if none of the above conditions are true then we conclude the it is a lexical error and the token type is
+    //set to ERROR.
     for (int i = 0; i < 19; i++)
     {
+
       if (w == reservedWords[i])
-      {
+      { //if reserved word at i == masu token type is VERB
         if (reservedWords[i] == "masu")
         {
           tt = VERB;
-        }
+        } //else if reserved word at i == masen token type is VERBNEG
         else if (reservedWords[i] == "masen")
         {
           tt = VERBNEG;
-        }
+        } //else if reserved word at i == mashita token type is VERBPAST
         else if (reservedWords[i] == "mashita")
         {
           tt = VERBPAST;
-        }
+        } //else if reserved word at i == masendeshita token type is VERBPASTNEG
         else if (reservedWords[i] == "masendeshita")
         {
           tt = VERBPASTNEG;
-        }
+        } //else if reserved word at i == desu token type is IS
         else if (reservedWords[i] == "desu")
         {
           tt = IS;
-        }
+        } //else if reserved word at i == o token type is OBJECT
         else if (reservedWords[i] == "o")
         {
           tt = OBJECT;
-        }
+        } //else if reserved word at i == wa token type is SUBJECT
         else if (reservedWords[i] == "wa")
         {
           tt = SUBJECT;
-        }
+        } //else if reserved word at i == ni token type is DESTINATION
         else if (reservedWords[i] == "ni")
         {
           tt = DESTINATION;
-        }
+        } //else if reserved word at i == watashi, anata, sore, kanojo, or kare. Token type is PRONOUN
         else if (reservedWords[i] == "watashi" || "anata" || "sore" || "kanojo" || "kare")
         {
           tt = PRONOUN;
-        }
+        } //else if reserved word at i == mata, soshite, shikashi, or dakara. Token type is CONNECTOR
         else if (reservedWords[i] == "mata" || "soshite" || "shikashi" || "dakara")
         {
           tt = CONNECTOR;
         }
+        //set the bool variable rWords to true because w is a reserved word
         rWords = true;
+        //break form the loop
         break;
       }
     }
+    //If the bool variable rWords is currently set to false,meaning that the word is not a reserved word, then look at the last letter of the word
+    //and determine if it is an I or an E
     if (!rWords)
     {
+      //If the last letter of the word is either an I or an E the tokentype is WORD2
       if (w[w.length() - 1] == 'I' || w[w.length() - 1] == 'E')
       {
         tt = WORD2;
       }
+      //If not an I or and E, the tokentype is WORD1
       else
       {
         tt = WORD1;
       }
     }
   }
+  //Call the period() to check if there is a period after the word. If so token type is PERIOD
   else if (period(w))
   {
     tt = PERIOD;
   }
+  //None of the above tokentypes have been found therefore a lexical error has occured and the tokenType ERROR is assigned
   else
   {
     cout << "Lexical error: " << w << " is not a valid token" << endl;
@@ -377,7 +399,7 @@ int main()
 
     cout << "Type is:" << tokenName[thetype] << endl;
     cout << "Word is:" << theword << endl;
-    cout << endl;  
+    cout << endl;
   }
 
   cout << "End of file is encountered." << endl;
