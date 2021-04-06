@@ -66,12 +66,12 @@ bool word(string s)
   //defining the state and pos
   string state = "q0";
   int charpos = 0;
-  cout << "Trying the dfa1 machine" << endl;
+  // cout << "Trying the dfa1 machine" << endl;
   /* replace the following todo the word dfa  */
   while (s[charpos] != '\0') //while not at the last character
   {
-    cout << "current state: " << state << endl;
-    cout << "character: " << s[charpos] << endl;
+    // cout << "current state: " << state << endl;
+    // cout << "character: " << s[charpos] << endl;
 
     //Transitions from q0
     if (state == "q0" && is_dwzyj(s[charpos]))
@@ -138,7 +138,7 @@ bool word(string s)
     //stuck transition
     else // if the character read is not an a or b then the dfa is stuck
     {
-      cout << "I am stuck in state " << state << endl;
+      // cout << "I am stuck in state " << state << endl;
       return (false);
     }
     charpos++; //move to the next character
@@ -159,12 +159,12 @@ bool period(string s)
   //defining the state and pos
   string state = "q0";
   int charpos = 0;
-  cout << "Trying the dfa2 machine" << endl;
+  // cout << "Trying the dfa2 machine" << endl;
 
   while (s[charpos] != '\0') //while not at the last character
   {
-    cout << "current state: " << state << endl;
-    cout << "character: " << s[charpos] << endl;
+    // cout << "current state: " << state << endl;
+    // cout << "character: " << s[charpos] << endl;
 
     //Transitions from q0
     if (state == "q0" && s[charpos] == '.')
@@ -172,7 +172,7 @@ bool period(string s)
     //stuck transition
     else // if the character read is not an a or b then the dfa is stuck
     {
-      cout << "I am stuck in state " << state << endl;
+      // cout << "I am stuck in state " << state << endl;
       return (false);
     }
     charpos++; //move to the next character
@@ -327,12 +327,16 @@ int scanner(tokentype &tt, string &w)
         else if (reservedWords[i] == "ni")
         {
           tt = DESTINATION;
-        } //else if reserved word at i == watashi, anata, sore, kanojo, or kare. Token type is PRONOUN
-        else if (reservedWords[i] == "watashi" || "anata" || "sore" || "kanojo" || "kare")
+        } //else if reserved word at i == deshita, token type is WAS
+        else if (reservedWords[i] == "deshita")
+        {
+          tt = WAS;
+        }//else if reserved word at i == watashi, anata, sore, kanojo, or kare. Token type is PRONOUN
+        else if (reservedWords[i] == "watashi" || reservedWords[i] ==  "anata" || reservedWords[i] == "sore" || reservedWords[i] == "kanojo" || reservedWords[i] == "kare")
         {
           tt = PRONOUN;
         } //else if reserved word at i == mata, soshite, shikashi, or dakara. Token type is CONNECTOR
-        else if (reservedWords[i] == "mata" || "soshite" || "shikashi" || "dakara")
+        else if (reservedWords[i] == "mata" || reservedWords[i] == "soshite" || reservedWords[i] == "shikashi" || reservedWords[i] == "dakara")
         {
           tt = CONNECTOR;
         }
@@ -347,15 +351,20 @@ int scanner(tokentype &tt, string &w)
     if (!rWords)
     {
       //If the last letter of the word is either an I or an E the tokentype is WORD2
-      if (w[w.length() - 1] == 'I' || w[w.length() - 1] == 'E')
+      if (w.back() == 'I' || w.back() == 'E')
       {
         tt = WORD2;
       }
       //If not an I or and E, the tokentype is WORD1
-      else
+      else /*if (w.back() == 'a'||w.back() == 'e'||w.back() == 'i'||w.back() == 'o'||w.back() == 'u')*/
       {
         tt = WORD1;
       }
+      // else
+      // {
+      //   cout << "Lexical error: " << w << " is not a valid token" << endl;
+      //   tt = ERROR;
+      // }
     }
   }
   //Call the period() to check if there is a period after the word. If so token type is PERIOD
