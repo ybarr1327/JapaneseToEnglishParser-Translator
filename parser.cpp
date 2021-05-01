@@ -680,8 +680,8 @@ int main()
   cin >> filename;
   fin.open(filename.c_str());
 
-  //** calls the <story> to start parsing
-  //** closes the input file
+  story();//** calls the <story> to start parsing
+  fin.close();//** closes the input file
 
 } // end
 //** require no other input files!
