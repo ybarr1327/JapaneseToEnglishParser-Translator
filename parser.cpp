@@ -402,14 +402,18 @@ int scanner(tokentype &tt, string &w)
 // ** Need syntaxerror1 and syntaxerror2 functions (each takes 2 args)
 //    to display syntax error messages as specified by me.
 
-// Type of error: **
-// Done by: **
+// Type of error: Syntax
+// Done by: Ryan Lochrane
+//syntaxerror1() takes a string and a token_type parameter and outputs an error message telling the user what the program expected and
+//what it found instead.
 void syntaxerror1(string saved_lexeme, tokentype saved_token)
 {
   cout << "SYNTAX ERROR: expected " << saved_token << " but found " << saved_lexeme << "\n";
 }
-// Type of error: **
-// Done by: **
+// Type of error: Syntax
+// Done by: Ryan Lochrane
+//syntaxerror2() takes a string parameter and outputs an error message telling the user that the program
+// found an unexpected saved_lexeme in the expected string.
 void syntaxerror2(string expected)
 {
   cout << "SYNTAX ERROR: unexpected " << saved_lexeme << " found in " << expected << "\n";
@@ -609,64 +613,82 @@ void noun()
   }
 }
 
-// verb function contains a switch statement that look a the token returned from the function next_token()
-// and looks for the case below. If the case is not found, then defalut is executed and a call to the function
-// syntaxerror2() where a error message is
+// Grammar: <verb> ::= WORD2
+// Done by: Ryan Lochrane
 void verb()
 {
+  //switch statement that calls next_token() and looks for the case where WORD2 is found
   switch (next_token())
   {
+    //case WORD2 looks calls match() to look for WORD2
   case WORD2:
     match(WORD2);
+    //break from the switch
     break;
-
+  // default case where syntaxerror2() is called to display error message
   default:
     syntaxerror2("verb");
+    //break form the switch
     break;
   }
 }
 
+// Grammar: <be> ::= IS | WAS
+// Done by: Ryan Lochrane
 void be()
 {
+  //switch statement that calls next_token() and looks for the below cases
   switch (next_token())
   {
+    //case IS looks calls match() to look for IS
   case IS:
     match(IS);
+    //break form the switch
     break;
-
+    //case WAS looks calls match() to look for WAS
   case WAS:
     match(WAS);
+    //break form the switch
     break;
-
+    // default case where syntaxerror2() is called to display error message
   default:
     syntaxerror2("be");
+    //break form the switch
     break;
   }
 }
 
+// Grammar: <tense> ::= VERBPAST | VERBPASTNEG | VERB | VERBNEG
+// Done by: Ryan Lochrane
 void tense()
 {
-
+  //switch statement that calls next_token() and looks for the below cases
   switch (next_token())
   {
+    //case VERBPAST looks calls match() to look for VERBPAST
   case VERBPAST:
     match(VERBPAST);
+    //break form the switch
     break;
-
+  //case VERBPASTNEG looks calls match() to look for VERBPASTNEG
   case VERBPASTNEG:
     match(VERBPASTNEG);
+    //break form the switch
     break;
-
+  //case VERB looks calls match() to look for VERB
   case VERB:
     match(VERB);
+    //break form the switch
     break;
-
+  //case VERBNEG looks calls match() to look for VERBNEG
   case VERBNEG:
     match(VERBNEG);
+    //break form the switch
     break;
 
   default:
     syntaxerror2("tense");
+    //break form the switch
     break;
   }
 }
