@@ -255,7 +255,7 @@ string reservedWords[19] = {
 
 // ------------ Scaner and Driver -----------------------
 
-ifstream fin; // global stream for reading from the input file
+// ifstream fin; // global stream for reading from the input file
 
 // Scanner processes only one word each time it is called
 // Gives back the token type and the word itself
@@ -416,11 +416,57 @@ void syntaxerror2(  ) {    }
 
 // Purpose: **
 // Done by: **
-token_type next_token(){}
+
+tokentype saved_token; // global buffer for the token the scanner returned.
+string saved_lexeme;
+bool token_available; // global flag indicating whether
+// we have saved a token to eat up or not
+
+// next_token(void)
+// Looks ahead to see what token comes next from the scanner.
+// HOW: checks first to see if the token_available flag is false.
+// If so, saved_token gets scanner() result.
+// and the flag is set true.
+// A token is grabbed but is not eaten up.
+// Returns the saved_token
+//
+// A lexeme is a sequence of characters in the source program that matches the pattern for a token
+// and is identified by the lexical analyzer as an instance of that token.
+tokentype next_token()
+{
+  
+  if (!token_available) // if there is no saved token yet
+  {
+    scanner(saved_token, saved_lexeme); // call scanner to grab a new token
+    token_available = true; // mark that fact that you have saved it
+    if (saved_token == ERROR)
+    {
+      syntaxerror1(saved_lexeme, saved_token);
+    }
+  }
+  return saved_token; // return the saved token
+}
 
 // Purpose: **
 // Done by: **
-boolean match(tokentype expected) {}
+//match(expected)
+// Checks and eats up the expected token.
+// HOW: checks to see if expected is different from next_token()
+// and if so, generates a syntax error and handles the error
+// else token_available becomes false (eat up) and returns true.
+bool match(tokentype expected)
+{
+  if (next_token() != expected) // mismatch has occurred with the next token
+  {
+    // calls a syntax error function here to generate a syntax error message here and do recovery
+    syntaxerror2(saved_lexeme, ......)
+  }
+  else // match has occurred
+  {
+    token_available = false; // eat up the token
+    return true; // say there was a match
+  }
+}
 
 // ----- RDP functions - one per non-term -------------------
 
