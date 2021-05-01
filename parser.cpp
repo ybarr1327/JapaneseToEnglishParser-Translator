@@ -473,7 +473,7 @@ bool match(tokentype expected)
 // ** Be sure to put the name of the programmer above each function
 
 // Grammar: **
-// Done by: **
+// Done by: Gabriel Ybarra
 void story() 
 {
   s();
@@ -489,7 +489,7 @@ void story()
 }
 
 // Grammar: **
-// Done by: **
+// Done by: Gabriel Ybarra
 void s()
 {
   switch(next_token())
@@ -508,6 +508,8 @@ void s()
   }
 }
 
+// Grammar: **
+// Done by: Gabriel Ybarra
 void after_subject()
 {
   switch (next_token())
