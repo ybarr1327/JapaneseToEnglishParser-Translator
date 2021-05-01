@@ -569,7 +569,6 @@ void after_noun() {
 
 // Grammar: <after_object> ::= <noun> DESTINATION <verb> <tense> PERIOD | <verb> <tense> PERIOD
 // Done by: Hieu Nguyen
-    match(DESTINATION);
 
 void after_object() {
     switch (next_token()) {
