@@ -548,69 +548,67 @@ void after_subject()
 
 // Grammar: <after_noun> ::= <be> PERIOD | DESTINATION <verb> <tense> PERIOD | OBJECT <afterObject>
 // Done by: Hieu Nguyen
-void after_noun()
-{
-  switch (next_token())
-  {
-  case IS:
-  case WAS:
-    be();
-    match(PERIOD);
-    break;
-  case DESTINATION:
-    match(DESTINATION);
-    verb();
-    tense();
-    match(PERIOD);
-    break;
-  case OBJECT:
-    match(OBJECT);
-    after_object();
-    break;
-  default:
-    syntaxerror2(AFTER_NOUN);
-  }
+
+void after_noun() {
+    switch (next_token()) {
+        case IS: case WAS:
+            be();
+            match(PERIOD);
+            break;
+        case DESTINATION:
+            match(DESTINATION);
+            verb();
+            tense();
+            match(PERIOD);
+            break;
+        case OBJECT:
+            match(OBJECT);
+            after_object();
+            break;
+        default:
+            syntaxerror2("after_noun");
+    }
+
 }
 
 // Grammar: <after_object> ::= <noun> DESTINATION <verb> <tense> PERIOD | <verb> <tense> PERIOD
 // Done by: Hieu Nguyen
-void after_object()
-{
-  switch (next_token())
-  {
-  case WORD1:
-  case PRONOUN:
-    noun();
-    match(DESTINATION);
-    verb();
-    tense();
-    match(PERIOD);
-    break;
-  case WORD2:
-    verb();
-    tense();
-    match(PERIOD);
-    break;
-  default:
-    syntaxerror2(AFTER_OBJECT);
-  }
+
+void after_object() {
+    switch (next_token()) {
+        case WORD1: case PRONOUN:
+            noun();
+            match(DESTINATION);
+            verb();
+            tense();
+            match(PERIOD);
+            break;
+        case WORD2:
+            verb();
+            tense();
+            match(PERIOD);
+            break;
+        default:
+            syntaxerror2("after_object");
+    }
+
 }
 
 // Grammar: <noun> ::= WORD1 | PRONOUN
 // Done by: Hieu Nguyen
-void noun()
-{
-  switch (next_token())
-  {
-  case WORD1:
-    match(WORD1);
-    break;
-  case PRONOUN:
-    match(PRONOUN);
-    break;
-  default:
-    syntaxerror2(NOUN);
-  }
+
+void noun(){
+    switch (next_token()) {
+        case WORD1:
+            match(WORD1);
+            break;
+        case PRONOUN:
+            match(PRONOUN);
+            break;
+        default:
+            syntaxerror2("noun");
+    }
+
 }
 
 // Grammar: <verb> ::= WORD2
@@ -697,15 +695,15 @@ string filename;
 //----------- Driver ---------------------------
 
 // The new test driver to start the parser
-// Done by:  **
+// Done by:  Hieu Nguyen
 int main()
 {
   cout << "Enter the input file name: ";
   cin >> filename;
   fin.open(filename.c_str());
 
-  //** calls the <story> to start parsing
-  //** closes the input file
+  story();//** calls the <story> to start parsing
+  fin.close();//** closes the input file
 
 } // end
 //** require no other input files!
