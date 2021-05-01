@@ -549,66 +549,71 @@ void after_subject()
 // Grammar: <after_noun> ::= <be> PERIOD | DESTINATION <verb> <tense> PERIOD | OBJECT <afterObject>
 // Done by: Hieu Nguyen
 
-void after_noun() {
-    switch (next_token()) {
-        case IS: case WAS:
-            be();
-            match(PERIOD);
-            break;
-        case DESTINATION:
-            match(DESTINATION);
-            verb();
-            tense();
-            match(PERIOD);
-            break;
-        case OBJECT:
-            match(OBJECT);
-            after_object();
-            break;
-        default:
-            syntaxerror2("after_noun");
-    }
-
+void after_noun()
+{
+  switch (next_token())
+  {
+  case IS:
+  case WAS:
+    be();
+    match(PERIOD);
+    break;
+  case DESTINATION:
+    match(DESTINATION);
+    verb();
+    tense();
+    match(PERIOD);
+    break;
+  case OBJECT:
+    match(OBJECT);
+    after_object();
+    break;
+  default:
+    syntaxerror2("after_noun");
+  }
 }
 
 // Grammar: <after_object> ::= <noun> DESTINATION <verb> <tense> PERIOD | <verb> <tense> PERIOD
 // Done by: Hieu Nguyen
 
-void after_object() {
-    switch (next_token()) {
-        case WORD1: case PRONOUN:
-            noun();
-            match(DESTINATION);
-            verb();
-            tense();
-            match(PERIOD);
-            break;
-        case WORD2:
-            verb();
-            tense();
-            match(PERIOD);
-            break;
-        default:
-            syntaxerror2("after_object");
-    }
-
+void after_object()
+{
+  switch (next_token())
+  {
+  case WORD1:
+  case PRONOUN:
+    noun();
+    match(DESTINATION);
+    verb();
+    tense();
+    match(PERIOD);
+    break;
+  case WORD2:
+    verb();
+    tense();
+    match(PERIOD);
+    break;
+  default:
+    syntaxerror2("after_object");
+  }
 }
 
 // Grammar: <noun> ::= WORD1 | PRONOUN
 // Done by: Hieu Nguyen
 
-void noun(){
-    switch (next_token()) {
-        case WORD1:
-            match(WORD1);
-            break;
-        case PRONOUN:
-            match(PRONOUN);
-            break;
-        default:
-            syntaxerror2("noun");
-    }
-
+void noun()
+{
+  switch (next_token())
+  {
+  case WORD1:
+    match(WORD1);
+    break;
+  case PRONOUN:
+    match(PRONOUN);
+    break;
+  default:
+    syntaxerror2("noun");
+  }
 }
 
 // Grammar: <verb> ::= WORD2
@@ -702,8 +707,8 @@ int main()
   cin >> filename;
   fin.open(filename.c_str());
 
-  story();//** calls the <story> to start parsing
-  fin.close();//** closes the input file
+  story();     //** calls the <story> to start parsing
+  fin.close(); //** closes the input file
 
 } // end
 //** require no other input files!
