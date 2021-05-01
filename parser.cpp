@@ -1,6 +1,6 @@
-#include<iostream>
-#include<fstream>
-#include<string>
+#include <iostream>
+#include <fstream>
+#include <string>
 using namespace std;
 
 /* INSTRUCTION:  Complete all ** parts.
@@ -338,8 +338,8 @@ int scanner(tokentype &tt, string &w)
         else if (reservedWords[i] == "deshita")
         {
           tt = WAS;
-        }//else if reserved word at i == watashi, anata, sore, kanojo, or kare. Token type is PRONOUN
-        else if (reservedWords[i] == "watashi" || reservedWords[i] ==  "anata" || reservedWords[i] == "sore" || reservedWords[i] == "kanojo" || reservedWords[i] == "kare")
+        } //else if reserved word at i == watashi, anata, sore, kanojo, or kare. Token type is PRONOUN
+        else if (reservedWords[i] == "watashi" || reservedWords[i] == "anata" || reservedWords[i] == "sore" || reservedWords[i] == "kanojo" || reservedWords[i] == "kare")
         {
           tt = PRONOUN;
         } //else if reserved word at i == mata, soshite, shikashi, or dakara. Token type is CONNECTOR
@@ -390,8 +390,6 @@ int scanner(tokentype &tt, string &w)
 
 } //the end of scanner
 
-
-
 //=================================================
 // File parser.cpp written by Group Number: Group 9
 //  Gabriel Ybarra
@@ -402,14 +400,14 @@ int scanner(tokentype &tt, string &w)
 // ----- Four Utility Functions and Globals -----------------------------------
 
 // ** Need syntaxerror1 and syntaxerror2 functions (each takes 2 args)
-//    to display syntax error messages as specified by me.  
+//    to display syntax error messages as specified by me.
 
 // Type of error: **
-// Done by: ** 
-void syntaxerror1(  ){    }
+// Done by: **
+void syntaxerror1() {}
 // Type of error: **
-// Done by: ** 
-void syntaxerror2(  ) {    }
+// Done by: **
+void syntaxerror2() {}
 
 // ** Need the updated match and next_token with 2 global vars
 // saved_token and saved_lexeme
@@ -434,11 +432,11 @@ bool token_available; // global flag indicating whether
 // and is identified by the lexical analyzer as an instance of that token.
 tokentype next_token()
 {
-  
+
   if (!token_available) // if there is no saved token yet
   {
     scanner(saved_token, saved_lexeme); // call scanner to grab a new token
-    token_available = true; // mark that fact that you have saved it
+    token_available = true;             // mark that fact that you have saved it
     if (saved_token == ERROR)
     {
       syntaxerror1(saved_lexeme, saved_token);
@@ -464,7 +462,7 @@ bool match(tokentype expected)
   else // match has occurred
   {
     token_available = false; // eat up the token
-    return true; // say there was a match
+    return true;             // say there was a match
   }
 }
 
@@ -477,6 +475,64 @@ bool match(tokentype expected)
 // Grammar: **
 // Done by: **
 
+void verb()
+{
+  switch (next_token())
+  {
+  case WORD2:
+    match(WORD2);
+    break;
+
+  default:
+    syntaxerror2();
+    break;
+  }
+}
+
+void be()
+{
+  switch (next_token())
+  {
+  case IS:
+    match(IS);
+    break;
+
+  case WAS:
+    match(WAS);
+    break;
+
+  default:
+    syntaxerror2();
+    break;
+  }
+}
+
+void tense()
+{
+
+  switch (next_token())
+  {
+  case VERBPAST:
+    match(VERBPAST);
+    break;
+
+  case VERBPASTNEG:
+    match(VERBPASTNEG);
+    break;
+
+  case VERB:
+    match(VERB);
+    break;
+
+  case VERBNEG:
+    match(VERBNEG);
+    break;
+
+  default:
+    syntaxerror2();
+    break;
+  }
+}
 string filename;
 
 //----------- Driver ---------------------------
@@ -490,9 +546,9 @@ int main()
   fin.open(filename.c_str());
 
   //** calls the <story> to start parsing
-  //** closes the input file 
+  //** closes the input file
 
-}// end
+} // end
 //** require no other input files!
 //** syntax error EC requires producing errors.txt of error messages
 //** tracing On/Off EC requires sending a flag to trace message output functions
