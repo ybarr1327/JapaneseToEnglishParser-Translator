@@ -474,6 +474,60 @@ bool match(tokentype expected)
 
 // Grammar: **
 // Done by: **
+void story() 
+{
+  s();
+  while (true)
+  {
+    if(next_token() == EOFM)
+    {
+      cout<<"Sucessfully parsed <story>."<<endl;
+      break;
+    }
+    s();
+  }
+}
+
+// Grammar: **
+// Done by: **
+void s()
+{
+  switch(next_token())
+  {
+    case CONNECTOR:
+      match(CONNECTOR):
+      noun();
+      match(SUBJECT);
+      after_subject();
+      break;
+    default:
+      noun();
+      match(SUBJECT);
+      after_subject();
+      break;
+  }
+}
+
+void after_subject()
+{
+  switch (next_token())
+  {
+  case VERB:
+    verb();
+    tense();
+    match(PERIOD);
+    break;
+
+  case WORD1:
+  case PRONOUN:
+    noun();
+    after_noun();
+    break;
+  
+  default:
+    break;
+  }
+}
 
 void verb()
 {
