@@ -3,6 +3,8 @@
 #include <string>
 using namespace std;
 
+ifstream fin; // global stream for reading from the input file
+
 /* INSTRUCTION:  Complete all ** parts.
    You may use any method to connect this file to scanner.cpp
    that you had written.  
@@ -255,7 +257,7 @@ string reservedWords[19] = {
 
 // ------------ Scaner and Driver -----------------------
 
-// ifstream fin; // global stream for reading from the input file
+
 
 // Scanner processes only one word each time it is called
 // Gives back the token type and the word itself
@@ -397,6 +399,10 @@ int scanner(tokentype &tt, string &w)
 //  Hieu Nguyen
 //=================================================
 
+tokentype saved_token; // global buffer for the token the scanner returned.
+string saved_lexeme;
+bool token_available; // global flag indicating whether
+
 // ----- Four Utility Functions and Globals -----------------------------------
 
 // ** Need syntaxerror1 and syntaxerror2 functions (each takes 2 args)
@@ -425,9 +431,7 @@ void syntaxerror2(string expected)
 // Purpose: **
 // Done by: **
 
-tokentype saved_token; // global buffer for the token the scanner returned.
-string saved_lexeme;
-bool token_available; // global flag indicating whether
+
 // we have saved a token to eat up or not
 
 // next_token(void)
@@ -445,7 +449,7 @@ tokentype next_token()
 
   if (!token_available) // if there is no saved token yet
   {
-    scanner(saved_token, saved_lexeme); // call scanner to grab a new token
+    saved_lexeme = scanner(saved_token, saved_lexeme); // call scanner to grab a new token
     token_available = true;             // mark that fact that you have saved it
     if (saved_token == ERROR)
     {
@@ -472,6 +476,7 @@ bool match(tokentype expected)
   else // match has occurred
   {
     token_available = false; // eat up the token
+    cout<<"Matched "<< expected <<endl;
     return true;             // say there was a match
   }
 }
@@ -482,10 +487,21 @@ bool match(tokentype expected)
 // ** Be sure to put the corresponding grammar rule above each function
 // ** Be sure to put the name of the programmer above each function
 
-// Grammar: **
+void story();
+void s();
+void after_subject();
+void after_noun();
+void after_object();
+void noun();
+void verb();
+void be();
+void tense();
+
+// Grammar: <s> { <s> }  
 // Done by: Gabriel Ybarra
 void story()
 {
+  cout<<"Processing <"<<"story"<<">"<<endl;
   s();
   while (true)
   {
@@ -498,10 +514,11 @@ void story()
   }
 }
 
-// Grammar: **
+// Grammar:<s> ::= [CONNECTOR] <noun> SUBJECT <after_subject>
 // Done by: Gabriel Ybarra
 void s()
 {
+  cout<<"Processing <"<<"s"<<">"<<endl;
   switch (next_token())
   {
   case CONNECTOR:
@@ -522,10 +539,11 @@ void s()
   }
 }
 
-// Grammar: **
+// Grammar: <after_subject> ::= <verb> <tense> PERIOD | <noun> <after_noun>
 // Done by: Gabriel Ybarra
 void after_subject()
 {
+  cout<<"Processing <"<<"after_subject"<<">"<<endl;
   switch (next_token())
   {
   case VERB:
@@ -549,77 +567,77 @@ void after_subject()
 // Grammar: <after_noun> ::= <be> PERIOD | DESTINATION <verb> <tense> PERIOD | OBJECT <afterObject>
 // Done by: Hieu Nguyen
 
-void after_noun()
-{
-  switch (next_token())
-  {
-  case IS:
-  case WAS:
-    be();
-    match(PERIOD);
-    break;
-  case DESTINATION:
-    match(DESTINATION);
-    verb();
-    tense();
-    match(PERIOD);
-    break;
-  case OBJECT:
-    match(OBJECT);
-    after_object();
-    break;
-  default:
-    syntaxerror2("after_noun");
-  }
+void after_noun() {
+  cout<<"Processing <"<<"after_noun"<<">"<<endl;
+    switch (next_token()) {
+        case IS: case WAS:
+            be();
+            match(PERIOD);
+            break;
+        case DESTINATION:
+            match(DESTINATION);
+            verb();
+            tense();
+            match(PERIOD);
+            break;
+        case OBJECT:
+            match(OBJECT);
+            after_object();
+            break;
+        default:
+            syntaxerror2("after_noun");
+    }
+
 }
 
 // Grammar: <after_object> ::= <noun> DESTINATION <verb> <tense> PERIOD | <verb> <tense> PERIOD
 // Done by: Hieu Nguyen
 
-void after_object()
-{
-  switch (next_token())
-  {
-  case WORD1:
-  case PRONOUN:
-    noun();
-    match(DESTINATION);
-    verb();
-    tense();
-    match(PERIOD);
-    break;
-  case WORD2:
-    verb();
-    tense();
-    match(PERIOD);
-    break;
-  default:
-    syntaxerror2("after_object");
-  }
+void after_object() {
+  cout<<"Processing <"<<"after_object"<<">"<<endl;
+    switch (next_token()) {
+        case WORD1: case PRONOUN:
+            noun();
+            match(DESTINATION);
+            verb();
+            tense();
+            match(PERIOD);
+            break;
+        case WORD2:
+            verb();
+            tense();
+            match(PERIOD);
+            break;
+        default:
+            syntaxerror2("after_object");
+    }
+
 }
 
 // Grammar: <noun> ::= WORD1 | PRONOUN
 // Done by: Hieu Nguyen
 
-void noun()
-{
-  switch (next_token())
-  {
-  case WORD1:
-    match(WORD1);
-    break;
-  case PRONOUN:
-    match(PRONOUN);
-    break;
-  default:
-    syntaxerror2("noun");
-  }
+
+void noun(){
+  cout<<"Processing <"<<"noun"<<">"<<endl;
+    switch (next_token()) {
+        case WORD1:
+            match(WORD1);
+            break;
+        case PRONOUN:
+            match(PRONOUN);
+            break;
+        default:
+            syntaxerror2("noun");
+    }
+
 }
 
 // Grammar: <verb> ::= WORD2
 // Done by: Ryan Lochrane
 void verb()
 {
+  cout<<"Processing <"<<"verb"<<">"<<endl;
   //switch statement that calls next_token() and looks for the case where WORD2 is found
   switch (next_token())
   {
@@ -640,6 +658,7 @@ void verb()
 // Done by: Ryan Lochrane
 void be()
 {
+  cout<<"Processing <"<<"be"<<">"<<endl;
   //switch statement that calls next_token() and looks for the below cases
   switch (next_token())
   {
@@ -665,6 +684,7 @@ void be()
 // Done by: Ryan Lochrane
 void tense()
 {
+  cout<<"Processing <"<<"tense"<<">"<<endl;
   //switch statement that calls next_token() and looks for the below cases
   switch (next_token())
   {
