@@ -500,10 +500,14 @@ void s()
       match(SUBJECT);
       after_subject();
       break;
-    default:
+    case WORD1:
+    case PRONOUN:
       noun();
       match(SUBJECT);
       after_subject();
+      break;
+    default:
+      syntaxerror2("s");
       break;
   }
 }
@@ -527,6 +531,7 @@ void after_subject()
     break;
   
   default:
+    syntaxerror2("after_subject");
     break;
   }
 }
