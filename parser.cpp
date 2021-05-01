@@ -404,10 +404,16 @@ int scanner(tokentype &tt, string &w)
 
 // Type of error: **
 // Done by: **
-void syntaxerror1() {}
+void syntaxerror1(string saved_lexeme, tokentype saved_token)
+{
+  cout << "SYNTAX ERROR: expected " << saved_token << " but found " << saved_lexeme << "\n";
+}
 // Type of error: **
 // Done by: **
-void syntaxerror2() {}
+void syntaxerror2(string expected)
+{
+  cout << "SYNTAX ERROR: unexpected " << saved_lexeme << " found in " << expected << "\n";
+}
 
 // ** Need the updated match and next_token with 2 global vars
 // saved_token and saved_lexeme
@@ -457,7 +463,7 @@ bool match(tokentype expected)
   if (next_token() != expected) // mismatch has occurred with the next token
   {
     // calls a syntax error function here to generate a syntax error message here and do recovery
-    syntaxerror2(saved_lexeme, ......)
+    syntaxerror2(saved_lexeme);
   }
   else // match has occurred
   {
@@ -596,6 +602,9 @@ void noun(){
     }
 }
 
+// verb function contains a switch statement that look a the token returned from the function next_token()
+// and looks for the case below. If the case is not found, then defalut is executed and a call to the function
+// syntaxerror2() where a error message is
 void verb()
 {
   switch (next_token())
@@ -605,7 +614,7 @@ void verb()
     break;
 
   default:
-    syntaxerror2();
+    syntaxerror2(saved_lexeme, saved_token);
     break;
   }
 }
@@ -623,7 +632,7 @@ void be()
     break;
 
   default:
-    syntaxerror2();
+    syntaxerror2(saved_lexeme, saved_token);
     break;
   }
 }
@@ -650,7 +659,7 @@ void tense()
     break;
 
   default:
-    syntaxerror2();
+    syntaxerror2(saved_lexeme, saved_token);
     break;
   }
 }
