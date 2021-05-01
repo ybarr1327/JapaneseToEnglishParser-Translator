@@ -480,14 +480,14 @@ bool match(tokentype expected)
 
 // Grammar: **
 // Done by: Gabriel Ybarra
-void story() 
+void story()
 {
   s();
   while (true)
   {
-    if(next_token() == EOFM)
+    if (next_token() == EOFM)
     {
-      cout<<"Sucessfully parsed <story>."<<endl;
+      cout << "Sucessfully parsed <story>." << endl;
       break;
     }
     s();
@@ -498,23 +498,23 @@ void story()
 // Done by: Gabriel Ybarra
 void s()
 {
-  switch(next_token())
+  switch (next_token())
   {
-    case CONNECTOR:
-      match(CONNECTOR):
-      noun();
-      match(SUBJECT);
-      after_subject();
-      break;
-    case WORD1:
-    case PRONOUN:
-      noun();
-      match(SUBJECT);
-      after_subject();
-      break;
-    default:
-      syntaxerror2("s");
-      break;
+  case CONNECTOR:
+    match(CONNECTOR);
+    noun();
+    match(SUBJECT);
+    after_subject();
+    break;
+  case WORD1:
+  case PRONOUN:
+    noun();
+    match(SUBJECT);
+    after_subject();
+    break;
+  default:
+    syntaxerror2("s");
+    break;
   }
 }
 
@@ -535,71 +535,78 @@ void after_subject()
     noun();
     after_noun();
     break;
-  
+
   default:
     syntaxerror2("after_subject");
     break;
   }
 }
 
-
 // Grammar: <after_noun> ::= <be> PERIOD | DESTINATION <verb> <tense> PERIOD | OBJECT <afterObject>
 // Done by: Hieu Nguyen
-void after_noun() {
-    switch (next_token()) {
-        case IS: case WAS:
-            be();
-            match(PERIOD);
-            break;
-        case DESTINATION:
-            match(DESTINATION);
-            verb();
-            tense();
-            match(PERIOD);
-            break;
-        case OBJECT:
-            match(OBJECT);
-            after_object();
-            break;
-        default:
-            syntaxerror2(AFTER_NOUN);
-    }
+void after_noun()
+{
+  switch (next_token())
+  {
+  case IS:
+  case WAS:
+    be();
+    match(PERIOD);
+    break;
+  case DESTINATION:
+    match(DESTINATION);
+    verb();
+    tense();
+    match(PERIOD);
+    break;
+  case OBJECT:
+    match(OBJECT);
+    after_object();
+    break;
+  default:
+    syntaxerror2(AFTER_NOUN);
+  }
 }
 
-// Grammar: <after_object> ::= <noun> DESTINATION <verb> <tense> PERIOD | <verb> <tense> PERIOD 
+// Grammar: <after_object> ::= <noun> DESTINATION <verb> <tense> PERIOD | <verb> <tense> PERIOD
 // Done by: Hieu Nguyen
-void after_object() {
-    switch (next_token()) {
-        case WORD1: case PRONOUN:
-            noun();
-            match(DESTINATION);
-            verb();
-            tense();
-            match(PERIOD);
-            break;
-        case WORD2:
-            verb();
-            tense();
-            match(PERIOD);
-            break;
-        default:
-            syntaxerror2(AFTER_OBJECT);
-    }
+void after_object()
+{
+  switch (next_token())
+  {
+  case WORD1:
+  case PRONOUN:
+    noun();
+    match(DESTINATION);
+    verb();
+    tense();
+    match(PERIOD);
+    break;
+  case WORD2:
+    verb();
+    tense();
+    match(PERIOD);
+    break;
+  default:
+    syntaxerror2(AFTER_OBJECT);
+  }
 }
 
-// Grammar: <noun> ::= WORD1 | PRONOUN 
+// Grammar: <noun> ::= WORD1 | PRONOUN
 // Done by: Hieu Nguyen
-void noun(){
-    switch (next_token()) {
-        case WORD1:
-            match(WORD1);
-            break;
-        case PRONOUN:
-            match(PRONOUN);
-            break;
-        default:
-            syntaxerror2(NOUN);
-    }
+void noun()
+{
+  switch (next_token())
+  {
+  case WORD1:
+    match(WORD1);
+    break;
+  case PRONOUN:
+    match(PRONOUN);
+    break;
+  default:
+    syntaxerror2(NOUN);
+  }
 }
 
 // verb function contains a switch statement that look a the token returned from the function next_token()
@@ -614,7 +621,7 @@ void verb()
     break;
 
   default:
-    syntaxerror2(saved_lexeme, saved_token);
+    syntaxerror2("verb");
     break;
   }
 }
@@ -632,7 +639,7 @@ void be()
     break;
 
   default:
-    syntaxerror2(saved_lexeme, saved_token);
+    syntaxerror2("be");
     break;
   }
 }
@@ -659,7 +666,7 @@ void tense()
     break;
 
   default:
-    syntaxerror2(saved_lexeme, saved_token);
+    syntaxerror2("tense");
     break;
   }
 }
