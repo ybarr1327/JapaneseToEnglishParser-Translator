@@ -220,6 +220,26 @@ enum tokentype
   CONNECTOR
 };
 
+string tokentypeStrings(tokentype val)
+{
+  if(val == 0) return "ERROR";
+  if(val == 1) return "WORD1";
+  if(val == 2) return "WORD2";
+  if(val == 3) return "PERIOD";
+  if(val == 4) return "EOFM";
+  if(val == 5) return "VERB";
+  if(val == 6) return "VERBNEG";
+  if(val == 7) return "VERBPAST";
+  if(val == 8) return "VERBPASTNEG";
+  if(val == 9) return "IS";
+  if(val == 10) return "WAS";
+  if(val == 11) return "SUBJECT";
+  if(val == 12) return "OBJECT";
+  if(val == 13) return "DESTINATION";
+  if(val == 14) return "PRONOUN";
+  if(val == 15) return "CONNECTOR";
+}
+
 // ** For the display names of tokens - must be in the same order as the tokentype.
 
 // tokenName is a string array that contains the display names of the tokens.
@@ -283,10 +303,12 @@ int scanner(tokentype &tt, string &w)
   */
 
   fin >> w;
+
+  cout<<"Scanner called using word: " << w <<endl;
   // if w == "eofm"
   if (w == "eofm")
   {
-    return EOFM; // returns the token type EOFM
+    tt = EOFM; // returns the token type EOFM
   }
   //else if word(w) returns true
   else if (word(w))
@@ -412,9 +434,9 @@ bool token_available; // global flag indicating whether
 // Done by: Ryan Lochrane
 //syntaxerror1() takes a string and a token_type parameter and outputs an error message telling the user what the program expected and
 //what it found instead.
-void syntaxerror1(string saved_lexeme, tokentype saved_token)
+void syntaxerror1(tokentype expected)
 {
-  cout << "SYNTAX ERROR: expected " << saved_token << " but found " << saved_lexeme << "\n";
+  cout << "SYNTAX ERROR: expected " << expected << " but found " << saved_lexeme << "\n";
 }
 // Type of error: Syntax
 // Done by: Ryan Lochrane
@@ -423,6 +445,7 @@ void syntaxerror1(string saved_lexeme, tokentype saved_token)
 void syntaxerror2(string expected)
 {
   cout << "SYNTAX ERROR: unexpected " << saved_lexeme << " found in " << expected << "\n";
+  exit(1);
 }
 
 // ** Need the updated match and next_token with 2 global vars
@@ -449,12 +472,11 @@ tokentype next_token()
 
   if (!token_available) // if there is no saved token yet
   {
-    saved_lexeme = scanner(saved_token, saved_lexeme); // call scanner to grab a new token
+    
+    scanner(saved_token, saved_lexeme); // call scanner to grab a new token
+    
     token_available = true;             // mark that fact that you have saved it
-    if (saved_token == ERROR)
-    {
-      syntaxerror1(saved_lexeme, saved_token);
-    }
+    
   }
   return saved_token; // return the saved token
 }
@@ -470,13 +492,12 @@ bool match(tokentype expected)
 {
   if (next_token() != expected) // mismatch has occurred with the next token
   {
-    // calls a syntax error function here to generate a syntax error message here and do recovery
-    syntaxerror2(saved_lexeme);
+    syntaxerror1(expected);
   }
   else // match has occurred
   {
     token_available = false; // eat up the token
-    cout<<"Matched "<< expected <<endl;
+    cout<<"Matched "<< tokentypeStrings(expected) <<endl;
     return true;             // say there was a match
   }
 }
@@ -527,14 +548,10 @@ void s()
     match(SUBJECT);
     after_subject();
     break;
-  case WORD1:
-  case PRONOUN:
+  default:
     noun();
     match(SUBJECT);
     after_subject();
-    break;
-  default:
-    syntaxerror2("s");
     break;
   }
 }
@@ -546,7 +563,7 @@ void after_subject()
   cout<<"Processing <"<<"after_subject"<<">"<<endl;
   switch (next_token())
   {
-  case VERB:
+  case WORD2:
     verb();
     tense();
     match(PERIOD);
@@ -715,6 +732,8 @@ void tense()
     break;
   }
 }
+
+
 string filename;
 
 //----------- Driver ---------------------------
