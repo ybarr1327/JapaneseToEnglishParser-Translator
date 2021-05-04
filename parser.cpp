@@ -14,6 +14,8 @@ ifstream fin; // global stream for reading from the input file
           cat scanner.cpp parser.cpp > myparser.cpp
 */
 
+//scanner.cpp file here------------------------------------------------------------------------------------------
+
 //=====================================================
 // File scanner.cpp written by:
 //  Gabriel Ybarra
@@ -414,6 +416,9 @@ int scanner(tokentype &tt, string &w)
 
 } //the end of scanner
 
+
+//end of scanner.cpp ------------------------------------------------------------------------------------------
+
 //=================================================
 // File parser.cpp written by Group Number: Group 9
 //  Gabriel Ybarra
@@ -422,7 +427,7 @@ int scanner(tokentype &tt, string &w)
 //=================================================
 
 tokentype saved_token; // global buffer for the token the scanner returned.
-string saved_lexeme;
+string saved_lexeme; //this is the string being read by the parser
 bool token_available; // global flag indicating whether
 
 // ----- Four Utility Functions and Globals -----------------------------------
@@ -451,8 +456,8 @@ void syntaxerror2(string expected)
 // ** Need the updated match and next_token with 2 global vars
 // saved_token and saved_lexeme
 
-// Purpose: **
-// Done by: **
+// Purpose: the next_token function's purpose is to call the scanner to figure out what the token type of the string to be read next is.
+// Done by: Gabriel Ybarra.
 
 
 // we have saved a token to eat up or not
@@ -481,8 +486,8 @@ tokentype next_token()
   return saved_token; // return the saved token
 }
 
-// Purpose: **
-// Done by: **
+// Purpose: the purpose of the match function is to match the token that was read with the one expected
+// Done by: Gabriel Ybarra
 //match(expected)
 // Checks and eats up the expected token.
 // HOW: checks to see if expected is different from next_token()
@@ -508,6 +513,7 @@ bool match(tokentype expected)
 // ** Be sure to put the corresponding grammar rule above each function
 // ** Be sure to put the name of the programmer above each function
 
+//prototypes for the RDP functions
 void story();
 void s();
 void after_subject();
@@ -734,7 +740,7 @@ void tense()
 }
 
 
-string filename;
+string filename; // this is the name of the file that will be read from
 
 //----------- Driver ---------------------------
 
