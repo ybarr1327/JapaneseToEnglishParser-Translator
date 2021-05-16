@@ -536,7 +536,7 @@ void story()
   }
 }
 
-// Grammar:<s> ::= [CONNECTOR] <noun> SUBJECT <after_subject>
+// Grammar:<s> ::= <s> ::= [CONNECTOR#getEword# #gen(“CONNECTOR”)] <noun>#getEword# SUBJECT #gen(“ACTOR”)# <after subject>
 // Done by: Gabriel Ybarra
 void s()
 {
@@ -563,7 +563,7 @@ void s()
   }
 }
 
-// Grammar: <after_subject> ::= <verb> <tense> PERIOD | <noun> <after_noun>
+// Grammar: <after subject> ::= <verb> #getEword# #gen(“ACTION”)# <tense> #gen(“TENSE”)#  PERIOD | <noun> #getEword# <after noun>
 // Done by: Gabriel Ybarra
 void after_subject()
 {
@@ -592,7 +592,7 @@ void after_subject()
   }
 }
 
-// Grammar: <after_noun> ::= <be> PERIOD | DESTINATION <verb> <tense> PERIOD | OBJECT <afterObject>
+// Grammar: <after_noun> ::= <be>#gen(“DESCRIPTION”)# #gen(“TENSE”)# PERIOD  | DESTINATION #gen(“TO”)# <verb> #getEword# #gen(“ACTION”)# <tense> #gen(“TENSE”)# PERIOD | OBJECT #gen(“OBJECT”)#  <after object>
 // Done by: Hieu Nguyen
 
 void after_noun() {
@@ -625,7 +625,7 @@ void after_noun() {
 
 }
 
-// Grammar: <after_object> ::= <noun> DESTINATION <verb> <tense> PERIOD | <verb> <tense> PERIOD
+// Grammar: <after_object> ::= <after object> ::= <verb>#getEword# #gen(“ACTION”)# <tense> #gen(“TENSE”)#  PERIOD |<noun> #getEword# DESTINATION #gen(“TO”)# <verb>#getEword# #gen(“ACTION”)#  <tense> #gen(“TENSE”)# PERIOD
 // Done by: Hieu Nguyen
 
 void after_object() {
@@ -832,7 +832,7 @@ void getEword()
 }
 
 
-//  Done by: 
+//  Done by: Ryan Lochrane
 //    gen(line_type) - using the line type,
 //                     sends a line of an IR to translated.txt
 //                     (saved_E_word or saved_token is used)
